@@ -1,5 +1,3 @@
-import { htmlhighlight } from "./languages/html";
-
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
