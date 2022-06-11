@@ -10,7 +10,7 @@ function newEditor() {
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
 
-    lineContent.addEventListener("input", (e) => {
+    lineContent.addEventListener("input", () => {
 
         // Showing line numbers
         lineNumber.innerHTML = "";
