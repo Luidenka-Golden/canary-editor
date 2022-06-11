@@ -65,7 +65,7 @@ function newEditor() {
     document.body.appendChild(editor);
 }
 
-function getCaret (el) {
+function getCaret(el) {
     const range = window.getSelection().getRangeAt(0);
     const prefix = range.cloneRange();
     prefix.selectNodeContents(el);
