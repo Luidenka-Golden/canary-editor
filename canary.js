@@ -10,21 +10,21 @@ function newEditor() {
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
 
-    lineContent.addEventListener("input", function(e) {
+    lineContent.addEventListener("input", (e) => {
 
         // Showing line numbers
-        document.getElementById("line-number").innerHTML = "";
-        const lineCount = document.getElementById("line-content").innerText.split("\n").length;
+        lineNumber.innerHTML = "";
+        const lineCount = lineContent.innerText.split("\n").length;
         if (lineCount != 1) {
             isNewLine = true;
             for (let l = 0; l < lineCount; l++) {
                 if (l != 0) {
-                    document.getElementById("line-number").innerText += l;
-                    document.getElementById("line-number").innerText += "\n";
+                    lineNumber.innerText += l;
+                    lineNumber.innerText += "\n";
                 }
             }
         }
-        else document.getElementById("line-number").innerText = 1;
+        else lineNumber.innerText = 1;
     });
 
     editor.appendChild(lineNumber);
