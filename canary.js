@@ -66,10 +66,16 @@ function newEditor() {
     document.body.appendChild(editor);
 }
 
-function getCaret(el) {
-    const range = window.getSelection().getRangeAt(0);
-    const prefix = range.cloneRange();
-    prefix.selectNodeContents(el);
-    prefix.setEnd(range.endContainer, range.endOffset);
-    return prefix.toString().length;
-};
+function getCaret(containerEl) {
+    var doc = containerEl.ownerDocument, win = doc.defaultView;
+    var range = win.getSelection().getRangeAt(0);
+    var preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(containerEl);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    var start = preSelectionRange.toString().length;
+
+    return {
+        start: start,
+        end: start + range.toString().length
+    }
+}
