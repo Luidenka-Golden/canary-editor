@@ -1,3 +1,5 @@
+const html = /<(.*) (.*)=(("|').*("|'))>.*<\/(.*)>/gm
+
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
