@@ -71,5 +71,5 @@ function getCaret(el) {
     const prefix = range.cloneRange();
     prefix.selectNodeContents(el);
     prefix.setEnd(range.endContainer, range.endOffset);
-    return prefix;
+    return prefix.toString();
 };
