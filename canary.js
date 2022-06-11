@@ -26,8 +26,7 @@ function newEditor() {
         }
         else lineNumber.innerText = 1;
 
-        getCaret(lineContent);
-        console.log(lineContent);
+        console.log(getCaret(lineContent));
     });
 
     lineContent.addEventListener("keypress", function(e) {
