@@ -58,7 +58,7 @@ function newEditor() {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-        }                                                                                                                                                                                                                                                                                                                                                                                                                           
+        }
     }, false);
 
     editor.appendChild(lineNumber);
