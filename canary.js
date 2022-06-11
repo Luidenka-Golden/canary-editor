@@ -11,7 +11,6 @@ function newEditor() {
     lineContent.contentEditable = true;
 
     lineContent.addEventListener("input", () => {
-
         // Showing line numbers
         lineNumber.innerHTML = "";
         const lineCount = lineContent.innerText.split("\n").length;
