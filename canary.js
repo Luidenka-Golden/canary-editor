@@ -1,9 +1,12 @@
+import { htmlhighlight } from "./languages/html";
+
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
     var lineContent = document.createElement("div");
 
     editor.id = "canary-editor";
+    editor.className = "language-html";
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
@@ -24,6 +27,9 @@ function newEditor() {
             }
         }
         else lineNumber.innerText = 1;
+
+        getCaret(lineContent);
+        console.log(lineContent);
     });
 
     lineContent.addEventListener("keypress", function(e) {
@@ -37,9 +43,8 @@ function newEditor() {
                 
                 var range = sel.getRangeAt(0);
                 range.deleteContents();
-                
-                
                 var text;
+
                 if (charTyped == "{") text = "{}"
                 else if (charTyped == "[") text = "[]"
                 else if (charTyped == "\"") text = "\"\""
@@ -61,3 +66,11 @@ function newEditor() {
     editor.appendChild(lineContent);
     document.body.appendChild(editor);
 }
+
+function getCaret (el) {
+    const range = window.getSelection().getRangeAt(0);
+    const prefix = range.cloneRange();
+    prefix.selectNodeContents(el);
+    prefix.setEnd(range.endContainer, range.endOffset);
+    return prefix.toString().length;
+};
