@@ -70,3 +70,7 @@ document.getElementById('line-content').addEventListener('keypress', (e) => {
     var cursor = getPosition();
     console.log(cursor);
 })
+
+function newEditor() {
+    
+}
