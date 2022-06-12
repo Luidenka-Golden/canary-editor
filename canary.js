@@ -9,7 +9,7 @@ function newEditor() {
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
     lineContent.style.color = "transparent";
-    lineContent.style.caretColor = "white"
+    lineContent.style.caretColor = "white";
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
 
