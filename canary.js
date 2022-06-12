@@ -1,10 +1,7 @@
-const html = /<|>/gm
-
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
     var lineContent = document.createElement("div");
-    var highlighted = document.createElement('div');
 
     editor.id = "canary-editor";
     editor.className = "language-html";
