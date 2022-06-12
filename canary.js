@@ -31,15 +31,15 @@ function newEditor() {
         console.log(getCaret(lineContent));
     });
 
-    lineContent.addEventListener("keypress", function(e) {
+    lineContent.addEventListener("keypress", function (e) {
         var charTyped = String.fromCharCode(e.which);
         if (charTyped == "{" || charTyped == "(" || charTyped == "[" || charTyped == "\"" || charTyped == "'") {
-            
+
             e.preventDefault();
-            
+
             var sel = window.getSelection();
             if (sel.rangeCount > 0) {
-                
+
                 var range = sel.getRangeAt(0);
                 range.deleteContents();
                 var text;
@@ -51,8 +51,8 @@ function newEditor() {
                 else text = "()"
                 var textNode = document.createTextNode(text);
                 range.insertNode(textNode);
-                
-                
+
+
                 range.setStart(textNode, 1);
                 range.setEnd(textNode, 1);
                 sel.removeAllRanges();
@@ -67,15 +67,16 @@ function newEditor() {
 }
 
 function getCaret(containerEl) {
-    var doc = containerEl.ownerDocument, win = doc.defaultView;
-    var range = win.getSelection().getRangeAt(0);
-    var preSelectionRange = range.cloneRange();
-    preSelectionRange.selectNodeContents(containerEl);
-    preSelectionRange.setEnd(range.startContainer, range.startOffset);
-    var start = preSelectionRange.toString().length;
+    var doc = containerEl.ownerDocument,
+        win = doc.defaultView || doc.parentWindow;
+    var selectedTextRange = doc.selection.createRange();
+    var preSelectionTextRange = doc.body.createTextRange();
+    preSelectionTextRange.moveToElementText(containerEl);
+    preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
+    var start = preSelectionTextRange.text.length;
 
     return {
         start: start,
-        end: start + range.toString().length
+        end: start + selectedTextRange.text.length
     }
 }
