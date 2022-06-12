@@ -8,7 +8,6 @@ function newEditor() {
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
-    lineContent.style.color = "transparent";
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
 
@@ -27,6 +26,7 @@ function newEditor() {
         }
         else lineNumber.innerText = 1;
 
+        // Syntax Highlighting
         var pos = getCaret(lineContent);
         syntaxHighlight(lineContent);
         restoreSelection(lineContent, pos);
