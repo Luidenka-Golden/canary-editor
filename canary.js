@@ -1,4 +1,4 @@
-const html = /<(.*) (.*)=(("|').*("|'))>.*<\/(.*)>/gm
+const html = /<|>/gm
 
 function newEditor() {
     var editor = document.createElement("div");
@@ -28,7 +28,9 @@ function newEditor() {
         }
         else lineNumber.innerText = 1;
 
-        console.log(getCaret(lineContent));
+        var pos = getCaret(lineContent);
+        syntaxHighlight(lineContent);
+        restoreSelection(lineContent, pos);
     });
 
     lineContent.addEventListener("keypress", function (e) {
@@ -78,4 +80,43 @@ function getCaret(containerEl) {
         start: start,
         end: start + range.toString().length
     }
+}
+
+function restoreSelection(containerEl, savedSel) {
+    var doc = containerEl.ownerDocument, win = doc.defaultView;
+    var charIndex = 0, range = doc.createRange();
+    range.setStart(containerEl, 0);
+    range.collapse(true);
+    var nodeStack = [containerEl], node, foundStart = false, stop = false;
+
+    while (!stop && (node = nodeStack.pop())) {
+        if (node.nodeType == 3) {
+            var nextCharIndex = charIndex + node.length;
+            if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
+                range.setStart(node, savedSel.start - charIndex);
+                foundStart = true;
+            }
+            if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
+                range.setEnd(node, savedSel.end - charIndex);
+                stop = true;
+            }
+            charIndex = nextCharIndex;
+        } else {
+            var i = node.childNodes.length;
+            while (i--) {
+                nodeStack.push(node.childNodes[i]);
+            }
+        }
+    }
+
+    var sel = win.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+function syntaxHighlight(el) {
+    var text = el.innerText;
+
+    text.replace(html, "<span class=\"tag-name\">&gt;$1&lt;</span>\
+    <span class=\"html-attr-key\">$2</span")
 }
