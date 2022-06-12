@@ -15,7 +15,6 @@ Link for CSS: `https://combinatronics.com/Luidenka/canary-editor/main/canary.css
 Example HTML Code:
 ```html
 <!DOCTYPE html>
-<!DOCTYPE html>
 
 <head>
     <title>Random Editor</title>
