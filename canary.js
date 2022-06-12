@@ -4,7 +4,7 @@ function newEditor() {
     var lineContent = document.createElement("div");
 
     editor.id = "canary-editor";
-    editor.className = "language-html";
+    editor.className = "language-python";
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
