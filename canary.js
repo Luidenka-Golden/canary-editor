@@ -67,16 +67,15 @@ function newEditor() {
 }
 
 function getCaret(containerEl) {
-    var doc = containerEl.ownerDocument,
-        win = doc.defaultView || doc.parentWindow;
-    var selectedTextRange = doc.selection.createRange();
-    var preSelectionTextRange = doc.body.createTextRange();
-    preSelectionTextRange.moveToElementText(containerEl);
-    preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
-    var start = preSelectionTextRange.text.length;
+    var doc = containerEl.ownerDocument, win = doc.defaultView;
+    var range = win.getSelection().getRangeAt(0);
+    var preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(containerEl);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    var start = preSelectionRange.toString().length;
 
     return {
         start: start,
-        end: start + selectedTextRange.text.length
+        end: start + range.toString().length
     }
 }
