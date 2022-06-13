@@ -10,7 +10,7 @@ div#line-content {
     outline: 0px solid transparent;
     background-color: #777;
     display: inline-block;
-    color: transparent;
+    /* color: transparent; */
     caret-color: white;
 }
 
@@ -22,4 +22,8 @@ div#line-content {
 
 .highlight-comment {
     color: darkolivegreen;
+}
+
+.syntaxHighlight {
+    display: inline-block;
 }

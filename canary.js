@@ -11,6 +11,7 @@ function newEditor() {
     lineContent.id = "line-content";
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
+    withSyntaxHighlight.id = "syntaxHighlight";
 
     lineContent.addEventListener("input", () => {
         // Showing line numbers
