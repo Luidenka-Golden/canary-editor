@@ -28,6 +28,8 @@ function newEditor() {
         }
         else lineNumber.innerText = 1;
 
+        withSyntaxHighlight.innerText = this.innerText;
+
         // var pos = getCaret(this);
         // restoreSelection(this, pos);
     });
