@@ -71,6 +71,7 @@ function newEditor() {
     document.body.appendChild(editor);
 }
 
+// Functions
 function getCaret(containerEl) {
     var doc = containerEl.ownerDocument, win = doc.defaultView;
     var range = win.getSelection().getRangeAt(0);
