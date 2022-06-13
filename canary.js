@@ -2,7 +2,6 @@ function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
     var lineContent = document.createElement("div");
-    var highlighted = document.createElement("div");
 
     editor.id = "canary-editor";
     editor.className = "language-python";
@@ -11,7 +10,6 @@ function newEditor() {
     lineContent.id = "line-content";
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
-    highlighted.style.userSelect = "none";
 
     lineContent.addEventListener("input", () => {
         // Showing line numbers
@@ -66,7 +64,6 @@ function newEditor() {
     }, false);
 
     editor.appendChild(lineNumber);
-    editor.appendChild(highlighted);
     editor.appendChild(lineContent);
     document.body.appendChild(editor);
 }
