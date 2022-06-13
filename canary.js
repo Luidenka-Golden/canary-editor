@@ -1,3 +1,9 @@
+const python_keywords = [
+    "and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except", "False",
+    "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "None", "nonlocal", "not",
+    "or", "pass", "raise", "return", "True", "try", "while", "with", "yield"
+]
+
 class Tokenize {
     constructor(text) {
         this.text = text;
@@ -17,7 +23,7 @@ class Tokenize {
                 if (this.current == "#") {
                     tokens.push(this.#make_comment());
                 } /* else if (this.current in "qwertyuiopasdfghjklzxcvbnm_") {
-                    tokens.push(this.#make_number());
+                    tokens.push(this.#make_identifier());
                 } */
             }
         }
@@ -34,6 +40,28 @@ class Tokenize {
         }
 
         return {"COMMENT": comment};
+    }
+
+    #make_number() {
+        var num_str = this.current;
+        this.#advance()
+        while (this.current != null && this.current.includes("1234567890.")) {
+            num_str += this.current;
+            this.#advance()
+        }
+    }
+
+    #make_identifier() {
+        var identifier_str = this.current;
+        this.#advance()
+        while (this.current != null && this.current.includes("qwertyuiopasdfghjklzxcvbnm1234567890_")) {
+            identifier_str += this.current;
+            this.#advance()
+        }
+
+        if (identifier_str in python_keywords) {
+
+        }
     }
 }
 
