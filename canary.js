@@ -16,9 +16,9 @@ class Tokenize {
             while (this.current != null) {
                 if (this.current == "#") {
                     tokens.push(this.#make_comment());
-                } else if (this.current in "qwertyuiopasdfghjklzxcvbnm_") {
+                } /* else if (this.current in "qwertyuiopasdfghjklzxcvbnm_") {
                     tokens.push(this.#make_number());
-                }
+                } */
             }
         }
 
