@@ -30,3 +30,7 @@ Example HTML Code:
 ## Contributing
 
 If you find this project interesting, feel free to pull a request. Or if you found a bug, open an issue and I'll fix it as soon as possible.
+
+## The Canary Team
+
+Founder: @Luidenka
