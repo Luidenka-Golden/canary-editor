@@ -9,8 +9,6 @@ function newEditor() {
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
-    lineContent.style.color = "transparent";
-    lineContent.style.caretColor = "white";
     lineContent.spellcheck = false;
     lineContent.contentEditable = true;
     highlighted.style.userSelect = "none";

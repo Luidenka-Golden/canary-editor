@@ -10,6 +10,8 @@ div#line-content {
     outline: 0px solid transparent;
     background-color: #777;
     display: inline-block;
+    color: transparent;
+    caret-color: white;
 }
 
 #canary-editor {
