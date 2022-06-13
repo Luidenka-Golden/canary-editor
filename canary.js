@@ -1,3 +1,5 @@
+import { Tokenize } from "tokenize.mjs";
+
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
@@ -28,7 +30,8 @@ function newEditor() {
 
         // Syntax Highlighting
         var pos = getCaret(this);
-        tokenize(this);
+        var tokenize = new Tokenize();
+        tokenize.tokenize();
         syntaxHighlight(this);
         restoreSelection(this, pos);
     });
