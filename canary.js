@@ -4,6 +4,15 @@ const python_keywords = [
     "or", "pass", "raise", "return", "True", "try", "while", "with", "yield"
 ]
 
+const python_builtins = [
+    "abs", "all", "any", "ascii", "bin", "bool", "bytearray", "bytes", "callable", "chr", "classmethod",
+    "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format",
+    "forzenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance",
+    "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open",
+    "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
+    "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip"
+]
+
 class Tokenize {
     constructor(text) {
         this.text = text;
@@ -59,9 +68,10 @@ class Tokenize {
             this.#advance()
         }
 
-        if (identifier_str.includes() python_keywords) {
-            return {"KEYWORD": ""};
+        if (identifier_str.includes(python_keywords)) {
+            return {"KEYWORD": identifier_str};
         }
+
     }
 }
 
