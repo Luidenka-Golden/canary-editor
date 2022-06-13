@@ -1,5 +1,8 @@
 # Canary Code Editor
 
+
+![Version](https://img.shields.io/badge/version-v0.1-orange)
+
 The Canary code editor is a code editor for Javascript/Python. It features line numbers, auto close braces and much more.
 
 ## Usage
