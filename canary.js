@@ -68,7 +68,7 @@ function newEditor() {
         // Syntax Highlighting
         var pos = getCaret(this);
         var tokenize = new Tokenize();
-        tokenize.tokenize();
+        console.log(tokenize.tokenize());
         syntaxHighlight(this);
         restoreSelection(this, pos);
     });
