@@ -59,8 +59,8 @@ class Tokenize {
             this.#advance()
         }
 
-        if (identifier_str in python_keywords) {
-
+        if (identifier_str.includes() python_keywords) {
+            return {"KEYWORD": ""};
         }
     }
 }
