@@ -55,15 +55,12 @@ function newEditor() {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-        }
+        } else if (e.key == "Tab") {
+            e.preventDefault();
 
-        if (e.key == "Tab") {
-            e.preventDefault()
-            var textNode = document.createTextNode("\t");
-
-            window.getSelection().getRangeAt(0).insertNode(textNode);
+            window.getSelection().getRangeAt(0).insertNode(document.createTextNode("\t"));
         }
-    }, false);
+    });
 
     editor.appendChild(lineNumber);
     editor.appendChild(lineContent);
