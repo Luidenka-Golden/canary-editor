@@ -1,80 +1,3 @@
-const python_keywords = [
-    "and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except", "False",
-    "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "None", "nonlocal", "not",
-    "or", "pass", "raise", "return", "True", "try", "while", "with", "yield"
-]
-
-const python_builtins = [
-    "abs", "all", "any", "ascii", "bin", "bool", "bytearray", "bytes", "callable", "chr", "classmethod",
-    "compile", "complex", "delattr", "dict", "dir", "divmod", "enumerate", "eval", "exec", "filter", "float", "format",
-    "forzenset", "getattr", "globals", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance",
-    "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview", "min", "next", "object", "oct", "open",
-    "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "setattr", "slice", "sorted",
-    "staticmethod", "str", "sum", "super", "tuple", "type", "vars", "zip"
-]
-
-class Tokenize {
-    constructor(text) {
-        this.text = text;
-        this.pos = 0;
-        this.#advance();
-    }
-
-    #advance() {
-        this.current = text[self.pos]
-        self.pos += 1
-    }
-
-    tokenize(mode) {
-        var tokens = [];
-        if (mode == "python") {
-            while (this.current != null) {
-                if (this.current == "#") {
-                    tokens.push(this.#make_comment());
-                } /* else if (this.current in "qwertyuiopasdfghjklzxcvbnm_") {
-                    tokens.push(this.#make_identifier());
-                } */
-            }
-        }
-
-        return tokens;
-    }
-
-    #make_comment() {
-        var comment = "#";
-        this.#advance()
-        while (this.current != null) {
-            comment += this.current;
-            this.#advance()
-        }
-
-        return {"COMMENT": comment};
-    }
-
-    #make_number() {
-        var num_str = this.current;
-        this.#advance()
-        while (this.current != null && this.current.includes("1234567890.")) {
-            num_str += this.current;
-            this.#advance()
-        }
-    }
-
-    #make_identifier() {
-        var identifier_str = this.current;
-        this.#advance()
-        while (this.current != null && this.current.includes("qwertyuiopasdfghjklzxcvbnm1234567890_")) {
-            identifier_str += this.current;
-            this.#advance()
-        }
-
-        if (identifier_str.includes(python_keywords)) {
-            return {"KEYWORD": identifier_str};
-        }
-
-    }
-}
-
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
@@ -103,15 +26,9 @@ function newEditor() {
         }
         else lineNumber.innerText = 1;
 
-        // Syntax Highlighting
-        var pos = getCaret(this);
-        var tokenize = new Tokenize();
-        console.log(tokenize.tokenize());
-        syntaxHighlight(this);
-        restoreSelection(this, pos);
     });
 
-    lineContent.addEventListener("keypress", function (e) {
+    lineContent.addEventListener("keypress", (e) => {
         var charTyped = String.fromCharCode(e.which);
         if (charTyped == "{" || charTyped == "(" || charTyped == "[" || charTyped == "\"" || charTyped == "'") {
 
@@ -138,6 +55,13 @@ function newEditor() {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
+        }
+
+        if (e.key == "Tab") {
+            e.preventDefault()
+            var textNode = document.createTextNode("\t");
+
+            window.getSelection().getRangeAt(0).insertNode(textNode);
         }
     }, false);
 
