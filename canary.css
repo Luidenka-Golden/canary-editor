@@ -3,6 +3,8 @@ div#line-number {
     width: 50px;
     text-align: center;
     background-color: #555;
+    height: 500px;
+    overflow: hidden;
 }
 
 div#line-content {
@@ -12,19 +14,12 @@ div#line-content {
     display: inline-block;
     white-space: pre;
     caret-color: white;
+    height: 500px;
+    overflow: auto;
 }
 
 #canary-editor {
     color: white;
     font-size: 11px;
     font-family: "SF Mono",Monaco,Menlo,Courier,monospace;
-}
-
-.highlight-comment {
-    color: darkolivegreen;
-}
-
-.syntaxHighlight {
-    display: inline-block;
-    z-index: 2;
 }

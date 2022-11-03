@@ -4,7 +4,6 @@ function newEditor() {
     var lineContent = document.createElement("div");
 
     editor.id = "canary-editor";
-    editor.className = "language-python";
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
@@ -60,6 +59,10 @@ function newEditor() {
 
             window.getSelection().getRangeAt(0).insertNode(document.createTextNode("\t"));
         }
+    });
+
+    lineContent.addEventListener("scroll", () => {
+        lineNumber.scrollTop = lineContent.scrollTop;
     });
 
     editor.appendChild(lineNumber);
@@ -120,7 +123,6 @@ function newEditorWithElement(el) {
     var lineContent = document.createElement("div");
 
     editor.id = "canary-editor";
-    editor.className = "language-python";
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
@@ -180,11 +182,4 @@ function newEditorWithElement(el) {
 
     editor.appendChild(lineNumber);
     editor.appendChild(lineContent);
-}
-
-function syntaxHighlight(el) {
-    var text = el.innerText;
-
-    text.replace(html, "<span class=\"tag-name\">&gt;$1&lt;</span>\
-    <span class=\"html-attr-key\">$2</span")
 }
