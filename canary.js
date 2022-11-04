@@ -80,7 +80,6 @@ function newEditorWithElement(el) {
     var lineNumber = document.createElement("div");
     var lineContent = document.createElement("div");
 
-    editor.id = "canary-editor";
     lineNumber.id = "line-number";
     lineNumber.innerText = "1";
     lineContent.id = "line-content";
@@ -133,10 +132,18 @@ function newEditorWithElement(el) {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-        } else if (e.keyCode == 9) {
-            insertTab();
-            e.preventDefault();
         }
+    });
+
+    lineContent.addEventListener('keydown', (e) => {
+        if (e.keyCode == 9) {
+            e.preventDefault();
+            insertTab();
+        }
+    });
+
+    lineContent.addEventListener("scroll", () => {
+        lineNumber.scrollTop = lineContent.scrollTop;
     });
 
     editor.appendChild(lineNumber);
