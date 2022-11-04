@@ -24,7 +24,9 @@ function newEditor() {
             }
         }
         else lineNumber.innerText = 1;
-
+        const c = getCaretCharacterOffsetWithin(lineContent);
+        lineContent.innerHTML = highlight(lineContent.innerText, "cpp");
+        setCaret(lineContent, c);
     });
 
     lineContent.addEventListener("keypress", (e) => {
@@ -54,10 +56,13 @@ function newEditor() {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-        } else if (e.key == "Tab") {
-            e.preventDefault();
+        }
+    });
 
-            window.getSelection().getRangeAt(0).insertNode(document.createTextNode("\t"));
+    lineContent.addEventListener('keydown', (e) => {
+        if (e.keyCode == 9) {
+            e.preventDefault();
+            insertTab();
         }
     });
 
@@ -68,53 +73,6 @@ function newEditor() {
     editor.appendChild(lineNumber);
     editor.appendChild(lineContent);
     document.body.appendChild(editor);
-}
-
-// Functions
-function getCaret(containerEl) {
-    var doc = containerEl.ownerDocument, win = doc.defaultView;
-    var range = win.getSelection().getRangeAt(0);
-    var preSelectionRange = range.cloneRange();
-    preSelectionRange.selectNodeContents(containerEl);
-    preSelectionRange.setEnd(range.startContainer, range.startOffset);
-    var start = preSelectionRange.toString().length;
-
-    return {
-        start: start,
-        end: start + range.toString().length
-    }
-}
-
-function restoreSelection(containerEl, savedSel) {
-    var doc = containerEl.ownerDocument, win = doc.defaultView;
-    var charIndex = 0, range = doc.createRange();
-    range.setStart(containerEl, 0);
-    range.collapse(true);
-    var nodeStack = [containerEl], node, foundStart = false, stop = false;
-
-    while (!stop && (node = nodeStack.pop())) {
-        if (node.nodeType == 3) {
-            var nextCharIndex = charIndex + node.length;
-            if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
-                range.setStart(node, savedSel.start - charIndex);
-                foundStart = true;
-            }
-            if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
-                range.setEnd(node, savedSel.end - charIndex);
-                stop = true;
-            }
-            charIndex = nextCharIndex;
-        } else {
-            var i = node.childNodes.length;
-            while (i--) {
-                nodeStack.push(node.childNodes[i]);
-            }
-        }
-    }
-
-    var sel = win.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
 }
 
 function newEditorWithElement(el) {
@@ -143,7 +101,9 @@ function newEditorWithElement(el) {
             }
         }
         else lineNumber.innerText = 1;
-
+        const c = getCaretCharacterOffsetWithin(lineContent);
+        lineContent.innerHTML = highlight(lineContent.innerText, "cpp");
+        setCaret(lineContent, c);
     });
 
     lineContent.addEventListener("keypress", (e) => {
@@ -173,13 +133,98 @@ function newEditorWithElement(el) {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-        } else if (e.key == "Tab") {
+        } else if (e.keyCode == 9) {
+            insertTab();
             e.preventDefault();
-
-            window.getSelection().getRangeAt(0).insertNode(document.createTextNode("\t"));
         }
     });
 
     editor.appendChild(lineNumber);
     editor.appendChild(lineContent);
+}
+
+// Misc
+
+function insertTab() {
+    if (!window.getSelection) return;
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    range.collapse(true);
+    const span = document.createElement('span');
+    span.appendChild(document.createTextNode('    '));
+    span.style.whiteSpace = 'pre';
+    range.insertNode(span);
+    range.setStartAfter(span);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
+// Syntax Highlighting
+
+function getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    var doc = element.ownerDocument || element.document;
+    var win = doc.defaultView || doc.parentWindow;
+    var sel;
+    if (typeof win.getSelection != "undefined") {
+        sel = win.getSelection();
+        if (sel.rangeCount > 0) {
+            var range = win.getSelection().getRangeAt(0);
+            var preCaretRange = range.cloneRange();
+            preCaretRange.selectNodeContents(element);
+            preCaretRange.setEnd(range.endContainer, range.endOffset);
+            caretOffset = preCaretRange.toString().length;
+        }
+    } else if ((sel = doc.selection) && sel.type != "Control") {
+        var textRange = sel.createRange();
+        var preCaretTextRange = doc.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+}
+
+function setCaret(el, pos) {
+
+    for (var node of el.childNodes) {
+        if (node.nodeType == 3) {
+            if (node.length >= pos) {
+                var range = document.createRange(),
+                    sel = window.getSelection();
+                range.setStart(node, pos);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                return -1;
+            } else {
+                pos -= node.length;
+            }
+        } else {
+            pos = setCaret(node, pos);
+            if (pos == -1) {
+                return -1;
+            }
+        }
+    }
+    return pos;
+}
+
+function highlight(text, lang) {
+    const words = text.split(/(\s+)/);
+    if (lang == "cpp") {
+        const output = words.map((word) => {
+            if (word === 'int' || word === 'char' || word === 'bool' || word === 'string' ||
+            word === 'void') {
+                return `<span style="color: rgb(105, 182, 250);">${word}</span>`;
+            } else if (word === '#include') {
+                return `<span style='color: rgb(174, 128, 255);'>${word}</span>`;
+            } else {
+                return word;
+            }
+        });
+        return output.join('');
+    }
 }
