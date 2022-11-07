@@ -235,7 +235,6 @@ function highlight(text, lang) {
                 return `<span style="color: rgb(217, 168, 147)">${word}</span>`;
             } else return word;
         });
-        console.log(output);
         return output.join('');
     }
 }
