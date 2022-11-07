@@ -1,3 +1,16 @@
+const keywordList = [
+    'asm', 'auto', 'break', 'case', 'catch', 'const_cast', 'continue', 'default', 'delete', 'do',
+    'dynamic_cast', 'else', 'explicit', 'export', 'false', 'for', 'friend', 'goto', 'if', 'inline', 'operator',
+    'register', 'reinterpret_cast', 'return', 'static', 'static_cast', 'struct', 'switch', 'template',
+    'this', 'throw', 'true', 'try', 'typeid', 'typename', 'virtual', 'volatile', 'wchar_t', 'while', '#include'
+];
+
+const dataTypes = [
+    'bool', 'char', 'class', 'const', 'double', 'enum', 'extern', 'float', 'int', 'long', 'mutable', 'namespace', 'new',
+    'private', 'protected', 'public', 'short', 'signed', 'sizeof', 'struct', 'static', 'typedef', 'union', 'unsigned',
+    'using', 'void'
+];
+
 function newEditor() {
     var editor = document.createElement("div");
     var lineNumber = document.createElement("div");
@@ -224,15 +237,16 @@ function highlight(text, lang) {
     const words = encodeHTMLEntities(text).split(/(\s+)/);
     if (lang == "cpp") {
         const output = words.map(word => {
-            if (word === 'int' || word === 'char' || word === 'bool' || word === 'string' ||
-            word === 'void') {
+            if (dataTypes.includes(word)) {
                 return `<span style="color: rgb(105, 182, 250);">${word}</span>`;
-            } else if (word === '#include' || word.match('if') || word.match('return') || word.match('else')) {
+            } else if (keywordList.includes(word)) {
                 return `<span style='color: rgb(221, 172, 250);'>${word}</span>`;
             } else if (word.match(/".*"/)) {
                 return `<span style="color: rgb(217, 168, 147)">${word}</span>`;
             } else if (word.match(/&#60;.*&#62;/)) {
                 return `<span style="color: rgb(217, 168, 147)">${word}</span>`;
+            } else if (word.match(/\w*\(.*\)/)) {
+                return `<span style="color: rgb(248, 252, 187)">${word}</span>`
             } else return word;
         });
         return output.join('');
