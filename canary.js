@@ -194,8 +194,11 @@ function getCaretCharacterOffsetWithin(element) {
     return caretOffset;
 }
 
-function setCaret(el, pos) {
+function encodeHTMLEntities(rawStr) {
+    return rawStr.replace(/[\u00A0-\u9999<>\&]/g, ((i) => `&#${i.charCodeAt(0)};`));
+}
 
+function setCaret(el, pos) {
     for (var node of el.childNodes) {
         if (node.nodeType == 3) {
             if (node.length >= pos) {
@@ -211,27 +214,28 @@ function setCaret(el, pos) {
             }
         } else {
             pos = setCaret(node, pos);
-            if (pos == -1) {
-                return -1;
-            }
+            if (pos == -1) return -1;
         }
     }
     return pos;
 }
 
 function highlight(text, lang) {
-    const words = text.split(/(\s+)/);
+    const words = encodeHTMLEntities(text).split(/(\s+)/);
     if (lang == "cpp") {
-        const output = words.map((word) => {
+        const output = words.map(word => {
             if (word === 'int' || word === 'char' || word === 'bool' || word === 'string' ||
             word === 'void') {
                 return `<span style="color: rgb(105, 182, 250);">${word}</span>`;
-            } else if (word === '#include') {
-                return `<span style='color: rgb(174, 128, 255);'>${word}</span>`;
-            } else {
-                return word;
-            }
+            } else if (word === '#include' || word.match('if') || word.match('return') || word.match('else')) {
+                return `<span style='color: rgb(221, 172, 250);'>${word}</span>`;
+            } else if (word.match(/".*"/)) {
+                return `<span style="color: rgb(217, 168, 147)">${word}</span>`;
+            } else if (word.match(/&#60;.*&#62;/)) {
+                return `<span style="color: rgb(217, 168, 147)">${word}</span>`;
+            } else return word;
         });
+        console.log(output);
         return output.join('');
     }
 }
